@@ -97,7 +97,9 @@ const createDatabase = async (): Promise<Database<sqlite3.Database, sqlite3.Stat
 		filename: dbFile
 	});
 
-	db.run('CREATE TABLE IF NOT EXISTS realtors (Id INTEGER NOT NULL, Name TEXT NOT NULL, Objects INTEGER NOT NULL, ObjectsWithGarden INTEGER NOT NULL) ');
+	await db.run('CREATE TABLE IF NOT EXISTS realtors (Id INTEGER NOT NULL, Name TEXT NOT NULL, Objects INTEGER NOT NULL, ObjectsWithGarden INTEGER NOT NULL);');
+	await db.run('CREATE INDEX idx_objects ON realtors (Objects);')
+	await db.run('CREATE INDEX idx_objectsWithGarden ON realtors (ObjectsWithGarden);')
 
 	return db;
 }
@@ -118,7 +120,7 @@ const start = async (): Promise<void> => {
 	});
 
 	const result = await db.get('SELECT SUM(Objects) as objectCount, SUM(ObjectsWithGarden) as gardenCount FROM realtors');
-	console.log('Objects found', result.objectCount, 'Objects with garden found', result.gardenCount);
+	console.log('Objects found', result.objectCount, ', Objects with garden found', result.gardenCount);
 
 	console.log('Indexing done');
 }
