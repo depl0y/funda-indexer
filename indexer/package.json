@@ -2,7 +2,6 @@
   "name": "front-end",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
     "axios": "0.21.1",
     "json2typescript": "1.4.1",

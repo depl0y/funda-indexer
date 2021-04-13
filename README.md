@@ -13,7 +13,7 @@ The indexer is a small script that is written in typescript. This queries the Fu
 
 ### Dependencies
 - **axios** I use axios to perform queries to the API. I love the stability and robustness Axios brings to the table.
-- **json2typescript** This library is really powerfull in serializing and deserializing data, for example data coming from API's. It performs checks on the data, you can add custom converters that convert all sorts of different data objects to objects you have available on 'your side' of the project.
+- **json2typescript** This library is really powerful in serializing and deserializing data, for example data coming from APIs. It performs checks on the data, you can add custom converters that convert all sorts of different data objects to objects you have available on 'your side' of the project.
 - **typescript** Type-safety is key and I will use Typescript over Javascript every time I have the chance.
 - **eslint**
 Making sure my code is compliant to the styling rules.
@@ -53,7 +53,7 @@ This will start a backend on port `19428`.
 
 ## Frontend
 
-For the frondend I used a simple React application, created by the default 'create-react-app' script. As a language I am using Typescript again (for the same reasons as mentioned above).
+For the frontend I used a simple React application, created by the default 'create-react-app' script. As a language I am using Typescript again (for the same reasons as mentioned above).
 
 The project contains 2 custom views responsible for showing the top 10 information and a table with results.
 
@@ -62,7 +62,7 @@ The project contains 2 custom views responsible for showing the top 10 informati
 Some of the dependencies are the same as for the indexer.
 
 - **axios** I use axios to perform queries to the API. I love the stability and robustness Axios brings to the table.
-- **json2typescript** This library is really powerfull in serializing and deserializing data, for example data coming from API's. It performs checks on the data, you can add custom converters that convert all sorts of different data objects to objects you have available on 'your side' of the project.
+- **json2typescript** This library is really powerful in serializing and deserializing data, for example data coming from APIs. It performs checks on the data, you can add custom converters that convert all sorts of different data objects to objects you have available on 'your side' of the project.
 - **typescript** Type-safety is key and I will use Typescript over Javascript every time I have the chance.
 - **react, react-dom, react-scripts**
 React modules needed to get the base application running

@@ -1,42 +1,16 @@
 import Axios from "axios";
 import * as fs from "fs";
-import { open, Database } from "sqlite";
 import sqlite3 from "sqlite3";
-import { JsonConvert, JsonObject, JsonProperty } from 'json2typescript';
+
+import { open, Database } from "sqlite";
+import { JsonConvert } from 'json2typescript';
+
+import { ResultSet } from './models/resultset';
 
 const apiKey = 'ac1b0b1572524640a0ecc54de453ea9f ';
 const url = `http://partnerapi.funda.nl/feeds/Aanbod.svc/json/${apiKey}/?type=koop`;
 const dbFile = '../data/storage.sqlite';
 const pageSize = 50;
-
-//#region  Minimal classes to map data to, just to be type-safe here
-@JsonObject('Paging')
-export class Paging {
-	@JsonProperty('AantalPaginas', Number)
-	public pages = 0;
-}
-
-@JsonObject('FundaObject')
-export class FundaObject {
-	@JsonProperty('IsVerkocht', Boolean)
-	public isSold = false;
-
-	@JsonProperty('MakelaarId', Number)
-	public realtorId = 0;
-
-	@JsonProperty('MakelaarNaam', String)
-	public realtorName = '';
-}
-
-@JsonObject('ResultSet')
-export class ResultSet {
-	@JsonProperty('Paging', Paging)
-	public paging: Paging = new Paging();
-
-	@JsonProperty('Objects', [FundaObject])
-	public objects: Array<FundaObject> = [];
-}
-//#endregion
 
 /**
  * Perform the query and deserialize the object into a Resultset
@@ -55,14 +29,14 @@ const getQueryResults = async (url: string): Promise<ResultSet> => {
 /**
  * Fetches realtor counts from the Funda API based on the supplied query, page and pagesize
  *
- * @param {string} zoekOpdracht The query to perform
+ * @param {string} query The query to perform
  * @param {number} page Which page to fetch
  * @param {number} [pageSize=25] Amount of items per page
  */
-const index = async (db: Database<sqlite3.Database, sqlite3.Statement>, zoekOpdracht: string, page: number, pageSize = 25, updateField: string): Promise<void> => {
-	console.log('Indexing', zoekOpdracht, 'page', page);
+const index = async (db: Database<sqlite3.Database, sqlite3.Statement>, query: string, page: number, pageSize = 25, updateField: string): Promise<void> => {
+	console.log('Indexing', query, 'page', page);
 
-	const pageUrl = `${url}&zo=${zoekOpdracht}&page=${page}&pagesize=${pageSize}`;
+	const pageUrl = `${url}&zo=${query}&page=${page}&pagesize=${pageSize}`;
 
 	const result = await getQueryResults(pageUrl);
 
@@ -78,7 +52,7 @@ const index = async (db: Database<sqlite3.Database, sqlite3.Statement>, zoekOpdr
 	}
 
 	if (result.paging.pages > page) {
-		await index(db, zoekOpdracht, page + 1, pageSize, updateField);
+		await index(db, query, page + 1, pageSize, updateField);
 	}
 };
 
