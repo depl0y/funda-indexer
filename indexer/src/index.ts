@@ -51,7 +51,7 @@ const index = async (db: Database<sqlite3.Database, sqlite3.Statement>, query: s
 		await db.run(statement, object.realtorId);
 	}
 
-	if (result.paging.pages > page) {
+	if (page < result.paging.pages) {
 		await index(db, query, page + 1, pageSize, updateField);
 	}
 };

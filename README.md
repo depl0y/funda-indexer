@@ -32,7 +32,7 @@ A database with a table 'realtors' will be created, with the following structure
 
 ### Run the indexer
 
-- `npm run prerequisites`
+- `npm run prerequisites` This will install ts-node, a dependency needed to let node run Typescript code and also performs an `npm install`.
 - `npm run index`
 
 ## Backend
@@ -82,4 +82,3 @@ This will launch a webserver on localhost:3000 and (most likely) will launch a b
 - Visual Studio 2019 was used for the backend
 - While developing this, the album Crossroad from Bon Jovi was playing
 - Normally I would use an UI framework like Bootstrap or Material-UI for the frontend as well, where the latter has my preference at the moment. This would only make things heavier than they needed to be for this test.
-- 
