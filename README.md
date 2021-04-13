@@ -28,7 +28,7 @@ A database with a table 'realtors' will be created, with the following structure
 | id | Integer | The id of the realtor |
 | name | Text | The name of the realtor |
 | objects | Integer | The amount of objects this realtor has in Amsterdam |
-| objectsWithGarden | Integer | The amount of objects this realtor has in Amster with a garden |
+| objectsWithGarden | Integer | The amount of objects this realtor has in Amsterdam with a garden |
 
 ### Run the indexer
 
@@ -75,3 +75,11 @@ In the frontend directory, run the following commands:
 - `npm run start`
 
 This will launch a webserver on localhost:3000 and (most likely) will launch a browser navigating to that page.
+
+# Additional information
+
+- Visual Studio Code was used for the indexer and the frontend.
+- Visual Studio 2019 was used for the backend
+- While developing this, the album Crossroad from Bon Jovi was playing
+- Normally I would use an UI framework like Bootstrap or Material-UI for the frontend as well, where the latter has my preference at the moment. This would only make things heavier than they needed to be for this test.
+- 

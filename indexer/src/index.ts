@@ -53,13 +53,13 @@ const getQueryResults = async (url: string): Promise<ResultSet> => {
 }
 
 /**
- * Fetches makerlaar counts from the Funda API based on the supplied query, page and pagesize
+ * Fetches realtor counts from the Funda API based on the supplied query, page and pagesize
  *
  * @param {string} zoekOpdracht The query to perform
  * @param {number} page Which page to fetch
  * @param {number} [pageSize=25] Amount of items per page
  */
-const index = async (db: Database<sqlite3.Database, sqlite3.Statement>, zoekOpdracht: string, page: number, pageSize = 25, updateCallback: () => string): Promise<void> => {
+const index = async (db: Database<sqlite3.Database, sqlite3.Statement>, zoekOpdracht: string, page: number, pageSize = 25, updateField: string): Promise<void> => {
 	console.log('Indexing', zoekOpdracht, 'page', page);
 
 	const pageUrl = `${url}&zo=${zoekOpdracht}&page=${page}&pagesize=${pageSize}`;
@@ -73,12 +73,12 @@ const index = async (db: Database<sqlite3.Database, sqlite3.Statement>, zoekOpdr
 			await db.run('INSERT INTO realtors (Id, Name, Objects, ObjectsWithGarden) VALUES (?, ?, 0, 0)', object.realtorId, object.realtorName);
 		}
 
-		const statement = updateCallback();
+		const statement = `UPDATE realtors SET ${updateField} = ${updateField} + 1 WHERE Id = ?`
 		await db.run(statement, object.realtorId);
 	}
 
 	if (result.paging.pages > page) {
-		await index(db, zoekOpdracht, page + 1, pageSize, updateCallback);
+		await index(db, zoekOpdracht, page + 1, pageSize, updateField);
 	}
 };
 
@@ -111,13 +111,9 @@ const createDatabase = async (): Promise<Database<sqlite3.Database, sqlite3.Stat
  */
 const start = async (): Promise<void> => {
 	const db = await createDatabase();
-	await index(db, '/amsterdam/', 1, pageSize, () => {
-		return 'UPDATE realtors SET Objects = Objects + 1 WHERE Id = ?';
-	});
 
-	await index(db, '/amsterdam/tuin', 1, pageSize, () => {
-		return 'UPDATE realtors SET ObjectsWithGarden = ObjectsWithGarden + 1 WHERE Id = ?';
-	});
+	await index(db, '/amsterdam/', 1, pageSize, 'Objects');
+	await index(db, '/amsterdam/tuin', 1, pageSize, 'ObjectsWithGarden');
 
 	const result = await db.get('SELECT SUM(Objects) as objectCount, SUM(ObjectsWithGarden) as gardenCount FROM realtors');
 	console.log('Objects found', result.objectCount, ', Objects with garden found', result.gardenCount);
